@@ -31,11 +31,11 @@ pudding <- list(
 sec_names <- c(temperature = "Zwietering")
 
 known <- list(Nmax = 1.4e8,N0 = 1e3, Q0 = 1, #initial values for the primary model
-              temperature_n = 1,
+              temperature_n = 2,
               temperature_xopt = 35
               )
 
-start <- list(mu_opt = 0.8, 
+start <- list(mu_opt = 4, 
               temperature_xmin = 2
               )                          
 
@@ -45,9 +45,24 @@ summary(global_fit)
 
 plot(global_fit)
 
+plot(global_fit, #add_factor = "temperature",
+     shape=1, 
+     label_x = "Time (days)",
+     label_y1 = "log (CFU/g)",
+     #label_y2 = "Temperature (ºC)",
+     #line_col = "maroon", 
+     line_size = 1,
+     line_type2 = 1, 
+     #line_col2 = "darkgrey"
+) 
 
+set.seed(12412)
+global_MCMC <- fit_multiple_growth_MCMC(start, pudding, known, sec_names, niter = 10000,
+                                        lower = c(2, 0),
+                                        upper = c(7, 5))
 
-
+summary(global_MCMC)
+plot(global_MCMC)
 
 
 
